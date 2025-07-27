@@ -35,7 +35,7 @@ The default options are
         settings = {
             initial_revisions = 10,         -- initial revisions to create buffers for
             max_revisions = 256,            -- max number of revisions to load
-            show_commit_index = false,      -- append {index|total} to buffer names when browsing revisions
+            show_commit_index = false,      -- append [index|total] to buffer names when browsing revisions
         },
     }
 

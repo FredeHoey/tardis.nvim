@@ -36,7 +36,7 @@ function M.Session:create_buffer(index)
     vim.api.nvim_set_option_value('readonly', true, { buf = fd })
     local buffer_name
     if self.parent.config.settings.show_commit_index then
-        buffer_name = string.format('%s (%s) {%d|%d}', self.filename, revision, index, #self.log)
+        buffer_name = string.format('%s (%s) [%d|%d]', self.filename, revision, index, #self.log)
     else
         buffer_name = string.format('%s (%s)', self.filename, revision)
     end
