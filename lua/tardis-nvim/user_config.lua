@@ -5,6 +5,7 @@ local M = {}
 ---@class TardisSettings
 ---@field max_revisions integer
 ---@field initial_revisions integer
+---@field show_commit_index boolean
 
 ---@class TardisConfig
 ---@field keymap TardisKeymap
@@ -27,6 +28,7 @@ local function get_default_config()
         settings = {
             max_revisions = 256,
             initial_revisions = 10,
+            show_commit_index = false,
         },
         debug = false,
     }
