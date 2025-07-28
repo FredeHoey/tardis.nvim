@@ -55,11 +55,19 @@ function M.get_revisions_for_current_file(parent)
     return git(root, 'log', '-n', parent.parent.config.settings.max_revisions, '--pretty=format:%h', '--', file)
 end
 
+---@class TardisRevisionInfo
+---@field message string
+---@field filetype string?
+
 ---@param revision string
 ---@param parent TardisSession
+---@return TardisRevisionInfo
 function M.get_revision_info(revision, parent)
     local root = util.dirname(parent.path)
-    return git(root, 'show', '--compact-summary', revision)
+    return {
+        message = git(root, 'show', '--compact-summary', revision),
+        filetype = "gitcommit"
+    }
 end
 
 return M

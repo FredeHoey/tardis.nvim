@@ -63,16 +63,18 @@ function M.Session:create_buffer(index)
 end
 
 function M.Session:create_info_buffer(revision)
-    local message = self.adapter.get_revision_info(revision, self)
-    if not message or #message == 0 then
+    local rev_info = self.adapter.get_revision_info(revision, self)
+    if not rev_info.message or #rev_info.message == 0 then
         vim.notify('revision_message was empty')
         return
     end
     local fd = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_lines(fd, 0, -1, false, message)
-    -- TODO: use appropriate filetype
-    vim.api.nvim_set_option_value('filetype', 'gitrevision', { buf = fd })
+    vim.api.nvim_buf_set_lines(fd, 0, -1, false, rev_info.message)
     vim.api.nvim_set_option_value('readonly', true, { buf = fd })
+
+    if rev_info.filetype then
+        vim.api.nvim_set_option_value('filetype', rev_info.filetype, { buf = fd })
+    end
 
     local current_ui = vim.api.nvim_list_uis()[1]
     if not current_ui then
@@ -82,7 +84,7 @@ function M.Session:create_info_buffer(revision)
         relative = 'win',
         anchor = 'NE',
         width = 100,
-        height = #message,
+        height = #rev_info.message,
         row = 0,
         col = current_ui.width,
     })
