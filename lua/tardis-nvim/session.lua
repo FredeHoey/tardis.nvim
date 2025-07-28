@@ -12,6 +12,7 @@ local M = {}
 ---@field origin integer
 ---@field buffers TardisBuffer[]
 ---@field adapter TardisAdapter
+---@field info_fd integer?
 M.Session = {}
 
 ---@param parent TardisSessionManager
@@ -53,13 +54,24 @@ function M.Session:create_buffer(index)
         self:close()
     end, { buffer = fd, desc = 'Quit' })
     vim.keymap.set('n', keymap.revision_message, function()
-        self:create_info_buffer(revision)
-    end, { buffer = fd, desc = 'Show revision message' })
+        self:toggle_info_buffer(revision)
+    end, { buffer = fd, desc = 'Toggle revision message' })
     vim.keymap.set('n', keymap.commit, function()
         self:commit_to_origin()
     end, { buffer = fd, desc = 'Replace origin buffer with this tardis buffer' })
 
     return buffer.Buffer:new(fd)
+end
+
+---@param revision string
+---@return integer
+function M.Session:toggle_info_buffer(revision)
+    if self.info_fd then
+        vim.api.nvim_buf_delete(self.info_fd, { force = true })
+        self.info_fd = nil
+    else
+        self.info_fd = self:create_info_buffer(revision)
+    end
 end
 
 function M.Session:create_info_buffer(revision)
@@ -88,7 +100,9 @@ function M.Session:create_info_buffer(revision)
         row = 0,
         col = current_ui.width,
     })
+    return fd
 end
+
 
 ---@param parent TardisSessionManager
 ---@param adapter_type string
