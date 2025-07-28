@@ -15,7 +15,7 @@ Like with any other
 .. code:: lua
 
    {
-       'fredeeb/tardis.nvim',
+       'fredehoey/tardis.nvim',
        dependencies = { 'nvim-lua/plenary.nvim' },
        config = true,
    }
@@ -65,4 +65,4 @@ Contributing
 
 Go ahead :)
 
-.. |issues| image:: https://github.com/FredeEB/tardis.nvim/issues
+.. |issues| image:: https://github.com/FredeHoey/tardis.nvim/issues
